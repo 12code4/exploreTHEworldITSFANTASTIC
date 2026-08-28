@@ -15,7 +15,13 @@ Canon and precedence, in order:
    2D, no build step, no binary assets (all art drawn in code, all sound
    synthesized), world-as-data with a **mandatory `why` field the loader
    enforces**, milestones named First Light → The Tithe.
-4. **[world/LEDGER.md](world/LEDGER.md)** — the mystery ledger. Rows
+4. **[world/COLOR.md](world/COLOR.md)** — the color script. Palette keys,
+   region scores, the ten postcards. Color always has a source; the vale
+   is naturalistic and holds detonations — never evenly colorful.
+5. **[world/DIALOGUE.md](world/DIALOGUE.md)** — the voice bible. Voices
+   are grammars; nobody says the theme; read every line aloud. The
+   stiffness rules are checked like the Interrogation is.
+6. **[world/LEDGER.md](world/LEDGER.md)** — the mystery ledger. Rows
    marked NEVER stay unanswered forever; do not "fix" them. New mysteries
    get a row before they ship.
 
@@ -28,7 +34,10 @@ Working rules for any session:
 - The world clock drives everything; nothing keys off player "progress,"
   which does not exist as a concept anywhere in the code or save data.
 - Keep the vale's voice: warm, specific, a little crooked. Distances in
-  bells. No money — customs. Nobody issues tasks; people occasion things.
+  bells. No money — customs. Nobody assigns tasks through any interface;
+  people ASK, face to face (PHILOSOPHY.md Amendment I), and promises are
+  strings on the journal — never a log, never a tracker, never a reward
+  tab.
 - Test rituals per PHILOSOPHY.md §Tests at every milestone; playtest
   notes go in `world/playtests/`.
 

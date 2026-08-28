@@ -41,6 +41,20 @@ Rules of the ledger:
 | 18 | Who wins the Good Rock, herons or gulls? | Sit and watch enough mornings: herons at dawn, gulls by midmorning, herons again when the ferry wake settles. The rock has a schedule like everyone else. |
 | 19 | Do Maren's way-marks tell the truth? | Yes — every one is testable and true (kestrel in May, the doubled echo, all of them). The world honors its own details; this is the vale teaching the player to trust it. |
 
-Tally at opening: 19 questions · 15 answered in-world · 4 NEVER
-(#1, #2, #3, #4) with #14 held as a minor never — the famous four are
-famous BECAUSE they are the tithe.
+| 20 | The Sea-Glass Rose — who leaded a kaleidoscope into a chapel window? | The fishing families, one pane per boat, from wreck-glass and bottle-bottoms; the chapel book says which pane is whose. The cat attends because of where the noon light lands. |
+| 21 | Why do the butterflies at the Dye Yards only mob the weld-yellow pool? | **NEVER.** Nobody knows. Nettle has asked them. |
+| 22 | Who lights the first lantern on Lantern Night? | The eldest, from the bakery oven's ember — the custom. Ada, for years now; her knees no longer do the bank, which occasions an ask. |
+| 23 | The scarf stripe that matches no pool — what dyed it? | **NEVER.** "Wasn't me. Pool did that on its own. Keep wearing it where the pool can see." |
+| 24 | Why does Grim sleep on the seventh chimney? | Warm stone. Probably. (See #2, which this answers not at all.) |
+| 25 | What color is Maren using now? | A living answer: ask Nettle, or read the order slips. Umber, currently. Umber means rock; rock means up. |
+| 26 | Is the moonbow real? | Yes — mist plus full moon at the falls. Her way-mark has the recipe: "moon + mist = yes." |
+| 27 | Why are the Dye Yards still steeped for one dyer? | Maren still orders inks; the pools would sulk otherwise; and the Hollow needs its pinks picked. Nettle will say all three, in that order, over three visits. |
+| 28 | What happened to the good winch? | The flood took it. Sela can go on about the winch at length, and the vale starts her on it at gatherings, on purpose, like a radio. |
+| 29 | Why did the bell ring thirteen that day? | *(Row reserved. The answer will be a player. The vale will keep their mistake warmly, as "the long noon," for a season.)* |
+
+Tally as populated: 29 questions · 22 answered in-world · 6 NEVER
+(#1, #2, #3, #4, #21, #23) with #14 held as a minor never, and #29
+reserved for whoever earns it. The famous mysteries run richer than a
+tithe on purpose — fame should attach to the unsolvable; the one-in-ten
+is audited across ALL questions, small ones included, at milestone
+*The Tithe*.

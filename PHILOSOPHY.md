@@ -249,9 +249,13 @@ taboos, they are consequences.
 - **XP, levels, loot, or currency as the point of a place.** Bribery. Paying
   people to explore is how you learn your world can't do it alone — and how
   you make sure they stop the day the paying stops.
-- **Fetch quests and objectives.** Assigned wonder is an oxymoron. The world
-  may *occasion* a goal (a ferry schedule implies catching the ferry); it
-  never issues one.
+- **Quest logs, objective trackers, and assigned wonder.** *(Amended — see
+  Amendment I.)* What is forbidden is the apparatus of assignment: logs,
+  trackers, markers, the word "objective," payment for compliance. The favor
+  itself never was — a neighbor may ask you to carry bread up the hill,
+  because a world where nobody needs anything is a diorama. The ask is
+  refusable, the promise is remembered as a string tied to your journal, and
+  no log ever exists.
 - **Teleport-anywhere fast travel.** It deletes the world between places.
   Speed is earned as knowledge instead: shortcuts found, passes learned, the
   ferry caught — ways of moving that are themselves places and proofs that
@@ -350,6 +354,35 @@ One thing this document deliberately does not do is name the world or
 describe it. Worlds described before their philosophy come out as brochures.
 The philosophy ends here; the world begins next, and the world's name will be
 found the way everything in it will be found — by going and looking.
+
+---
+
+## Amendments
+
+The philosophy is a law code, not scripture. It can be amended — in writing,
+with reasons, recorded here. It is never silently patched.
+
+**Amendment I — Asks and Strings.** *(Added with the first population of
+Wennow Vale.)* The original Forbidden list banned "fetch quests and
+objectives," and half of that was right. The half that was wrong: a living
+world contains people who need things, and a stranger you can ask a favor of
+is one of the warmest objects a world can hold. What kills wonder was never
+the favor — it is the apparatus: the log, the tracker, the exclamation mark,
+the reward tab, the completion tick.
+
+So, the doctrine of asks: people may ask things of the player, **face to
+face, in their own words, at the right hour** — never through any interface.
+An ask is refusable with a shake of the head, without penalty, and being
+asked is itself a small honor. A promise accepted ties a **string** to the
+player's journal — the vale's own custom for remembering — with a little
+sketch of who asked; kept, it unties itself. Forgotten, it just stays,
+patient, and nobody scolds. Consequences of kept promises are relational and
+worldly — trust, doors, a name learned, a stripe of impossible color —
+never numeric.
+
+What remains forbidden forever: the quest log, the objective marker, the
+tracker, timers on kindness, payment in numbers, and any ask that must be
+accepted for the world to continue.
 
 ---
 

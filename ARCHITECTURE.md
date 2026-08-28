@@ -47,6 +47,7 @@ src/
   main.js            boot, loop, fixed-step update / rAF render
   clock.js           world time, phases, persistence   ← FIRST SYSTEM BUILT
   weather.js         states, transitions, the rare Green Evening
+  wind.js            THE one wind: global field + gusts; everything subscribes
   schedule.js        the routine lattice (people, ferry, tides, petals)
   camera.js          follow / gaze / overlook / sketch-world states
   input.js           keys + touch; walk, hop, sit, gaze, lift, talk
@@ -54,22 +55,30 @@ src/
     painter.js       chunked static underpaint → offscreen canvases
     scene.js         y-sorted dynamic pass (people, cats, player, water)
     light.js         light pass: time-of-day grade, lamps, glow, god-gaps
-    particles.js     petals, birds, rain, mist, fireflies, chalk dust
-    sketch.js        the pencil→ink renderer for beyond the doorframe
+    color.js         palette keys + region/hour grading (world/COLOR.md as data)
+    particles.js     petals, butterflies, birds, rain, mist, motes, fireflies,
+                     lanterns, chalk dust, eel shimmer
+    showpieces.js    the Rose projection, the Glimmer shaft, wet-stone
+                     reflections, moonbow, lantern water
+    looker.js        the kaleidoscope lens: offscreen frame → 6-fold mirror
+    sketch.js        the pencil→ink(→color) renderer for beyond the doorframe
   audio/
     ambience.js      wind / river / birds / sea, mixed by place + weather
-    bell.js          the hour bell (flat third), synthesis
+    bell.js          the hour bell (flat third), synthesis; playable pattern
+    echo.js          the Steps' doubled echo; hummable, teachable
     tune.js          the vale's one melody and its scattered fragments
-  journal.js         memory, sketches, the player-drawn map; never counts
-  dialogue.js        rotating lines by clock/weather/warmth-memory
-  people.js          routine-following characters; warmth flags (untracked UI)
-  gestures.js        emitter runtime: light, sound, motion, smoke as guidance
-  save.js            localStorage: time, position, journal, name-learned
+  journal.js         memory, sketches, strings, the player-drawn map; never counts
+  dialogue.js        voices as grammars (world/DIALOGUE.md), rotation, gestures
+  people.js          routine-following characters; warmth flags; asks; gossip
+  gestures.js        emitter runtime: light, sound, motion, smoke, COLOR as guidance
+  save.js            localStorage: time, position, journal, scarf, name-learned
 world/
   vale.js            the master layout: regions, elevations, the river
   places/            one module per authored place (see schema)
-  people/            one module per person: routine, lines, warmth hooks
+  people/            one module per person: routine, voice grammar, asks, warmth
   LEDGER.md          the mystery ledger (human-readable, audited)
+  COLOR.md           the color script: keys, scores, the ten postcards
+  DIALOGUE.md        the voice bible: grammars, sample banks, scenes
   tune.js            the melody as data; who carries which fragment, how bent
 ```
 
@@ -121,6 +130,23 @@ list of its emitters — reviewable, auditable, per place.
 do: 'wind-gates', where: 'locks'}`. The lattice in WORLD.md §5 is one
 file a human can read against the fiction.
 
+**Asks are data with preconditions, never a quest table:** `{who: 'perl',
+when: 'morning', if: ['visited:locks'], ask: 'bread-round'}` — each ask
+is a scene (lines + a carryable + a string), gated on context and
+history, refusable, and finished by a world event, not a turn-in screen.
+The loader rejects any ask whose resolution grants a countable.
+
+**Voices are grammars in data:** each person's module declares their
+syntax constraints from [world/DIALOGUE.md](world/DIALOGUE.md) (max
+words, banned words, tics) and their line banks tagged by hour, weather,
+and history. A dev-mode lint checks lines against the grammar — the
+stiffness check is automated exactly like the Interrogation.
+
+**Gossip is a token system:** deeds mint rumor tokens; tokens transfer
+only when two people actually meet on the schedule lattice; each hop can
+mutate the wording (data carries per-hop variants). News walks, at
+walking speed, because it is literally carried.
+
 **The Ledger** stays Markdown (`world/LEDGER.md`) — a table the build is
 audited against, not runtime data. Mysteries live in the world's details;
 the ledger just keeps us honest about answers and the tithe.
@@ -171,9 +197,32 @@ place, not an overlay; sitting is the "pause menu."
   canopy gaps project moving light shapes in the Hushes. The philosophy's
   "beauty is direction" is implemented here — gesture emitters of kind
   `light` feed this pass.
+- **Color is a graded system, not paint** (`render/color.js`, data from
+  [world/COLOR.md](world/COLOR.md)): each region carries a palette key;
+  the renderer crossfades keys by position and hour. The detonation
+  places (the Hollow, the Yards, the Rose, the Glimmer) are where the
+  grade opens up — and every detonation has a physical source drawn in
+  the world, because color without a source is forbidden by the script.
+- **The wind is one system** (`wind.js`): a single global field with
+  traveling gusts. Grass blades, cloth lines, petals, smoke, laundry,
+  water chop, and lantern drift all sample the same field, so a gust is
+  a visible event crossing the whole vale. This is the cheapest large
+  purchase of "alive" in the whole engine.
 - Particles carry half the life budget: petals (with the up-valley dusk
-  wind vector — the famous mystery is a particle force field), birds,
-  mist sheets, rain, chalk dust, eel-run shimmer.
+  wind vector — the famous mystery is literally a force field),
+  butterflies (biased toward weld-yellow, per the ledger), birds, mist
+  sheets, rain, pollen motes, fireflies, floating lanterns, chalk dust,
+  eel-run shimmer.
+- **Showpiece renderers** (`render/showpieces.js`) implement the ten
+  postcards: the Rose's colored-light projection (polygon light lying on
+  floor/pews/cat/player + motes in the shafts), the Glimmer's noon shaft
+  (clock-keyed, clear-weather-keyed), wet flagstone reflections (the
+  vale upside-down after rain), the moonbow, and Lantern Night's water
+  (additive glows with wind-drifted paths).
+- **The Looker** (`render/looker.js`): raise it and the frame renders
+  through a six-fold mirrored-sector composite, slowly rotating with
+  movement — any view becomes a mandala. A rendering mode as a toy,
+  because we are a video game and can do that.
 - Internal resolution ~960×540 letterboxed, integer-ish scale to fit;
   60 fps on a mid laptop is the budget; chunk cache and pass count are
   the levers.
@@ -200,8 +249,12 @@ place, not an overlay; sitting is the "pause menu."
 
 `save.js` keeps: world time, weather seed, player position, journal
 entries (sketches, names, rumors in the speaker's words, the path-memory
-polyline for her bench and the journal map), warmth-memories, and whether
-the vale's name has been learned (the title that learns). 
+polyline for her bench and the journal map), **strings** (open promises,
+each just an asker-id and a sketch — no text, no status field beyond
+tied/untied), the scarf's stripe history (colors in dip order — the
+player's palette autobiography), warmth-memories, gossip state (which
+rumor tokens have reached whom), and whether the vale's name has been
+learned (the title that learns). 
 
 **No save field may be a counter of world content.** No
 `secretsFound: 7/40` can exist even internally, because whatever exists
@@ -237,8 +290,16 @@ Named for the vale, not numbered for a sprint board:
    title that learns), audio full mix, weather including the Green
    Evening, save polish.
 9. **The Tithe** — ledger audit (answers reachable, nevers untouched),
-   materials audit against WORLD.md §8, Forbidden sweep of the codebase,
+   materials audit against WORLD.md, Forbidden sweep of the codebase,
    and the full test ritual on fresh players.
+
+Where the population pass lands in the milestones: the wind system and
+color grading are **First Light** work (they are the light pass's
+siblings); the Rose, chalk, bell-ringing, asks/strings, and gossip land
+in **Noon Bell**; the Hollow, the Glimmer, and the Looker in **Hush &
+Stone**; the Dye Yards, the scarf, and the rain rush in **High Water**;
+Lantern Night, the echo game, and the moonbow in **Inks**. No milestone
+count changes; the vale got denser, not longer.
 
 ---
 
