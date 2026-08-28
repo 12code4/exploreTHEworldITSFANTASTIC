@@ -11,6 +11,11 @@
   P.register = function (def) {
     if (!def.why) throw new Error('INTERROGATION FAILED: person "' + def.id + '" has no why.');
     def.x = 0; def.y = 0; def.fx = 0; def.fy = 1;
+    if (def.schedule && def.schedule.length) { // static folk stand where they live
+      const s0 = def.schedule[0];
+      const p0 = s0.at || (V.layout.nodes[s0.node] ? [V.layout.nodes[s0.node][0] + (s0.dx || 0), V.layout.nodes[s0.node][1] + (s0.dy || 0)] : [0, 0]);
+      def.x = p0[0]; def.y = p0[1];
+    }
     def.route = null; def.routeI = 0; def.walking = false;
     def.saidToday = [];
     def.warmth = 0;
@@ -38,6 +43,7 @@
       const stop = currentStop(p);
       const dest = stopPos(stop);
       if (!p.placed) { p.x = dest[0]; p.y = dest[1]; p.placed = true; p.curStop = stop; }
+      p.hiddenNow = !!(stop.sleep && !p.route);
       if (p.curStop !== stop) {
         // walk the node graph to the new stop
         const from = V.layout.nearestNode(p.x, p.y);
@@ -133,6 +139,7 @@
   P.nearest = function (x, y, r) {
     let best = null, bd = r || 40;
     for (const p of P.list) {
+      if (p.hiddenNow) continue;
       const d = U.dist(x, y, p.x, p.y);
       if (d < bd) { bd = d; best = p; }
     }

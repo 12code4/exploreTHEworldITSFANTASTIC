@@ -25,8 +25,9 @@
   O.place({
     id: 'boathouse-hull', kind: 'boat', at: [878, 4952], patched: true, scale: 1.1,
     why: "Odd's father built hulls; this upturned one is his last, kept dry and useful. Maren patched its cracks with a spoiled sheet of her first survey — she papered half the vale.",
-    gaze: ['The hull is patched with old paper. Lean closer: it is a MAP. The vale, drawn young, in a quick hand.'],
+    gaze: ['The hull is patched with old paper. Lean closer: it is a MAP. The vale, drawn young, in a quick hand.', 'Across the top, in fast letters: WENNOW VALE. One edge of the sheet was left blank.'],
     journal: 'the boathouse hull is patched with a map of the vale, drawn young',
+    learnName: 'Wennow Vale',
   });
 
   O.place({
@@ -101,6 +102,23 @@
     id: 'heron-1', kind: 'heron', at: [1408, 5178], solid: false,
     why: "The senior heron, who has held the good rock through eleven administrations of gulls.",
     gaze: ['The heron regards you with the patience of a creature that has already won today.'],
+  });
+
+  O.place({
+    id: 'skim-stones', kind: 'rock', at: [1240, 5115], scale: 0.8, solid: false,
+    why: "A drift of flat stones the tide sorts by skippability, restocked nightly; the harbor's oldest game and its only sport with a judge.",
+    use(pl) {
+      const skims = ['You skim one. Three skips and a long sigh of water.', 'Four skips. A gull files a complaint.', 'Two skips. The sea keeps it anyway.', 'FIVE. The stone was mostly wing.'];
+      const i = (V.state.flags.skimI = ((V.state.flags.skimI || 0) + 1)) % skims.length;
+      V.textbox.say('', [skims[i]], () => {
+        const odd = V.people.byId('odd');
+        if (odd && !odd.hiddenNow && V.util.dist(odd.x, odd.y, pl.x, pl.y) < 120) {
+          const rates = ['Seven. Tide helped.', "Four. Don't blame the wind.", 'Six. Wrist. Not arm.', 'Eight. Say nothing. Walk away.'];
+          V.textbox.say('Odd Bole', [rates[i % rates.length]]);
+        }
+      });
+      V.journal.note('the harbor has a sport, and a judge');
+    },
   });
 
   // sea holly softens the strand

@@ -36,9 +36,23 @@
     if (w === 1) c = U.mix(c, K.sand, 0.75);
     if (w === 2) c = U.mix('#3E5560', '#2E4450', n);              // the bed, seen through water
 
-    // worn ways
+    // the gorge shows its bones: rock walls shouldering the river, following
+    // its curve, feathered at both edges (analytic — no slope sampling)
+    if (y > 1450 && y < 2430) {
+      const d = V.terrain.riverDist(x, y);
+      const inner = U.clamp((d - 85) / 45, 0, 1);
+      const outer = U.clamp((280 - d) / 90, 0, 1);
+      const band = U.clamp((y - 1450) / 120, 0, 1) * U.clamp((2430 - y) / 120, 0, 1);
+      const rock = inner * outer * band;
+      if (rock > 0.02) c = U.mix(c, U.mix('#8A8272', '#6E6A5E', n), rock * 0.75);
+    }
+
+    // worn ways: narrow, broken by growth, honest about feet not paving
     const pd = V.terrain.nearPath(x, y);
-    if (pd < 22 && w === 0) c = U.mix(c, K.path, U.clamp((22 - pd) / 22, 0, 0.85) * (0.5 + n * 0.4));
+    if (pd < 15 && w === 0) {
+      const wear = U.clamp((15 - pd) / 15, 0, 1) * (0.28 + n * 0.34);
+      c = U.mix(c, K.path, U.clamp(wear, 0, 0.62));
+    }
 
     // field bases (flower drifts tint the ground beneath them)
     for (const f of P.fields) {
@@ -117,12 +131,15 @@
     return c;
   }
 
+  let bakeBudget = 0;
   P.chunk = function (cx, cy) {
     const k = cx + ',' + cy;
     if (!cache.has(k)) {
+      if (bakeBudget <= 0) return null; // pop in next frame; no hitching
+      bakeBudget--;
       cache.set(k, bake(cx, cy));
       order.push(k);
-      if (order.length > 30) { cache.delete(order.shift()); }
+      if (order.length > 48) { cache.delete(order.shift()); }
     } else {
       order = order.filter((o) => o !== k); order.push(k);
     }
@@ -132,13 +149,19 @@
   P.invalidate = () => { cache.clear(); order = []; };
 
   P.drawStatic = function (ctx, cam) {
+    bakeBudget = 3;
     const v = cam.view();
     const cx0 = Math.floor(v.x / CH), cy0 = Math.floor(v.y / CH);
     const cx1 = Math.floor((v.x + v.w) / CH), cy1 = Math.floor((v.y + v.h) / CH);
     for (let cy = cy0; cy <= cy1; cy++) {
       for (let cx = cx0; cx <= cx1; cx++) {
-        if (cx < 0 || cy < 0 || cx * CH > V.layout.W + CH || cy * CH > V.layout.H) continue;
-        ctx.drawImage(P.chunk(cx, cy), cx * CH, cy * CH);
+        if (cx < 0 || cy < 0 || cx * CH > V.layout.W + 1300 || cy * CH > V.layout.H) continue;
+        const ch = P.chunk(cx, cy);
+        if (ch) ctx.drawImage(ch, cx * CH, cy * CH);
+        else { // a held-breath placeholder in the ground's own key
+          ctx.fillStyle = '#5E6F50';
+          ctx.fillRect(cx * CH, cy * CH, CH, CH);
+        }
       }
     }
   };

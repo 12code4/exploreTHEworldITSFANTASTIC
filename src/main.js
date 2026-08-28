@@ -49,7 +49,13 @@
   canvas.addEventListener('pointerdown', (e) => {
     V.audio.start();
     if (mode === 'title') { mode = 'intro'; return; }
-    if (V.textbox.active()) { V.textbox.advance(); return; }
+    if (V.textbox.active()) {
+      if (V.textbox.isAsking()) {
+        const rr = canvas.getBoundingClientRect();
+        V.textbox.choose((e.clientX - rr.left) / rr.width < 0.5 ? 0 : 1);
+      }
+      V.textbox.advance(); return;
+    }
     if (V.journal.open) { V.journal.toggle(); return; }
     const r = canvas.getBoundingClientRect();
     const sx = (e.clientX - r.left) / r.width * CAM.SW;
@@ -100,6 +106,23 @@
     mode = 'play';
   }
   if (q.get('day')) V.clock.day = parseInt(q.get('day'));
+  const DBG = !!q.get('dbg');
+  // the Silent Walk bot: drive the traveler node-to-node with no UI and
+  // watch where walking dies. The heatmap of abandoned walks is our bug
+  // tracker — this is that, in one URL param. ?at=a&walkto=b
+  let walkRoute = null;
+  if (q.get('walkto') && V.layout.nodes[q.get('walkto')]) {
+    const from = q.get('at') || 'landing';
+    walkRoute = V.layout.route(from, q.get('walkto')).map((id) => V.layout.nodes[id]);
+  }
+  function driveWalk() {
+    if (!walkRoute || !walkRoute.length) return;
+    const t = walkRoute[0];
+    const d = U.dist(V.player.x, V.player.y, t[0], t[1]);
+    if (d < 14) { walkRoute.shift(); return; }
+    input.tap = { x: t[0], y: t[1] };
+    if (V.textbox.active()) V.textbox.advance();
+  }
 
   V.clock.onNewDay = function () { V.people.newDay(); };
 
@@ -143,6 +166,7 @@
       }
       if (t >= 1 && !V.textbox.active()) { startPlay(); V.journal.note('came in on the morning ferry'); }
     } else if (mode === 'play') {
+      driveWalk();
       V.player.update(dt, input);
       V.people.update(dt);
       V.camera.update(dt, V.player);
@@ -173,6 +197,7 @@
     const extra = [];
     for (const p of V.people.list) {
       const v = CAM.view();
+      if (p.hiddenNow) continue;
       if (p.x < v.x - 80 || p.x > v.x + v.w + 80 || p.y < v.y - 80 || p.y > v.y + v.h + 80) continue;
       extra.push({ y: p.y, draw: () => V.people.draw(ctx, p) });
     }
@@ -205,9 +230,21 @@
 
     // screen-space
     ctx.setTransform(CAM.dpr, 0, 0, CAM.dpr, 0, 0);
+    // a breath of vignette so every frame composes like a picture
+    const vg = ctx.createRadialGradient(CAM.SW / 2, CAM.SH / 2, CAM.SH * 0.45, CAM.SW / 2, CAM.SH / 2, CAM.SH * 0.95);
+    vg.addColorStop(0, 'rgba(0,0,0,0)');
+    vg.addColorStop(1, 'rgba(10,16,12,0.28)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, CAM.SW, CAM.SH);
     V.textbox.draw(ctx, CAM.SW, CAM.SH);
     V.journal.draw(ctx, CAM.SW, CAM.SH);
     drawToasts();
+    if (DBG) {
+      const v2 = CAM.view();
+      ctx.fillStyle = '#FF6060';
+      ctx.font = '700 16px monospace';
+      ctx.fillText('m=' + mode + ' p=' + (V.player.x | 0) + ',' + (V.player.y | 0) + ' c=' + (CAM.x | 0) + ',' + (CAM.y | 0) + ' z=' + CAM.zoom.toFixed(2) + ' vy=' + (v2.y | 0), 14, CAM.SH - 14);
+    }
     V.showpieces.drawLooker(ctx, canvas, CAM.SW, CAM.SH);
   }
 

@@ -76,7 +76,7 @@
     yardstop:  [2010, 2820],
     locks:     [1345, 2740],
     stepsfoot: [1290, 2360],
-    falls:     [1235, 2085],
+    falls:     [1340, 2085],
     herbench:  [1260, 1830],
     hut:       [1215, 1560],
     doorframe: [1225, 1395],

@@ -44,6 +44,8 @@
 
   T.left = function () { if (asking && showing && chars >= showing.text.length) asking.choice = 0; };
   T.right = function () { if (asking && showing && chars >= showing.text.length) asking.choice = 1; };
+  T.isAsking = () => !!(asking && showing && chars >= (showing.text || '').length);
+  T.choose = function (i) { if (asking) asking.choice = i; };
 
   T.update = function (dt) {
     if (showing && chars < showing.text.length) chars += dt * 60;

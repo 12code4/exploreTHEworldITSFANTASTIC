@@ -15,16 +15,16 @@
 
   // hour -> sky/grade stops. Hours are world hours 0..24.
   const GRADES = [
-    { h: 0,    sky: '#0C1316', top: '#0A1118', horizon: '#16241E', tint: '#101820', tintA: 0.42, warm: 0 },
-    { h: 4.5,  sky: '#101A1C', top: '#0D161C', horizon: '#1C2A24', tint: '#101A20', tintA: 0.38, warm: 0 },
+    { h: 0,    sky: '#0A1014', top: '#080E14', horizon: '#121E1A', tint: '#0A1018', tintA: 0.58, warm: 0 },
+    { h: 4.5,  sky: '#0E181A', top: '#0B141A', horizon: '#1A2822', tint: '#0C161E', tintA: 0.52, warm: 0 },
     { h: 6,    sky: '#C7CFC2', top: '#9FB4B8', horizon: '#F4CBA8', tint: '#F4CBA8', tintA: 0.16, warm: 0.35 },
     { h: 8,    sky: '#DCE7DC', top: '#BFD3D6', horizon: '#F2E3B6', tint: '#F6EFD8', tintA: 0.07, warm: 0.15 },
     { h: 12,   sky: '#E8EFE4', top: '#CFE0E4', horizon: '#EFF3EA', tint: '#FFFFFF', tintA: 0.0,  warm: 0 },
     { h: 16,   sky: '#E2EAD8', top: '#C9DBD8', horizon: '#F2E7C4', tint: '#F6E8C0', tintA: 0.06, warm: 0.12 },
     { h: 18.5, sky: '#D8C9B0', top: '#A8B2B8', horizon: '#F0C482', tint: '#E8B978', tintA: 0.20, warm: 0.55 },
     { h: 20,   sky: '#5C6470', top: '#3A4450', horizon: '#8E6E5E', tint: '#4A4258', tintA: 0.30, warm: 0.1 },
-    { h: 21.5, sky: '#1A222A', top: '#131A22', horizon: '#2A3230', tint: '#182028', tintA: 0.40, warm: 0 },
-    { h: 24,   sky: '#0C1316', top: '#0A1118', horizon: '#16241E', tint: '#101820', tintA: 0.42, warm: 0 },
+    { h: 21.5, sky: '#141C22', top: '#0E161E', horizon: '#20282A', tint: '#0E161E', tintA: 0.55, warm: 0 },
+    { h: 24,   sky: '#0A1014', top: '#080E14', horizon: '#121E1A', tint: '#0A1018', tintA: 0.58, warm: 0 },
   ];
 
   P.grade = function (hour) {

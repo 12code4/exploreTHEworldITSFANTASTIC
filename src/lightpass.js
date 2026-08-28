@@ -17,10 +17,12 @@
     const dusk = V.palette.duskness(h);
     const v = cam.view();
 
-    // canopy shade deepens the wood
-    // (cheap: a soft dark wash over the hushes bounds, day only)
+    // canopy shade deepens the wood, fading softly at its eaves
     if (dusk < 0.8) {
-      ctx.fillStyle = 'rgba(20,35,24,' + (0.16 * (1 - dusk)) + ')';
+      const cg = ctx.createRadialGradient(640, 3480, 120, 640, 3480, 620);
+      cg.addColorStop(0, 'rgba(20,35,24,' + (0.2 * (1 - dusk)) + ')');
+      cg.addColorStop(1, 'rgba(20,35,24,0)');
+      ctx.fillStyle = cg;
       ctx.beginPath(); ctx.ellipse(640, 3480, 560, 620, 0, 0, 6.28); ctx.fill();
     }
 

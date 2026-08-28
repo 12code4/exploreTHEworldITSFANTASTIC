@@ -38,7 +38,7 @@
     C.zoom += (tzoom - C.zoom) * (1 - Math.pow(0.006, dt));
 
     const hw = C.SW / 2 / C.zoom, hh = C.SH / 2 / C.zoom;
-    C.x = U.clamp(C.x, hw - 100, V.layout.W - hw + 100);
+    C.x = U.clamp(C.x, hw - 100, 3800); // east headroom covers the Under
     C.y = U.clamp(C.y, hh, V.layout.H - hh + 60);
   };
 

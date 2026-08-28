@@ -158,8 +158,11 @@
       ctx.beginPath();
       ctx.moveTo(x - 4 * s, y - 2); ctx.quadraticCurveTo(x - 5 * s, y - 18 * s, x - 1 * s, y - 22 * s);
       ctx.lineTo(x, y - 2); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(90,110,80,0.5)'; // moss on the north face
-      ctx.beginPath(); ctx.ellipse(x - 3 * s, y - 6 * s, 3 * s, 5 * s, 0.4, 0, 6.28); ctx.fill();
+      ctx.fillStyle = 'rgba(90,110,80,0.32)'; // a modest moss cuff, low down
+      ctx.beginPath(); ctx.ellipse(x - 2.4 * s, y - 4 * s, 2.2 * s, 3.2 * s, 0.4, 0, 6.28); ctx.fill();
+      ctx.strokeStyle = 'rgba(40,44,40,0.4)'; // a carved base line to read as stone
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x - 4 * s, y - 3 * s); ctx.lineTo(x + 4 * s, y - 3 * s); ctx.stroke();
     },
     rock(ctx, o) {
       const s = o.scale || 1;

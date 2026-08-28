@@ -12,28 +12,40 @@
     const g = V.palette.grade(h);
     const dusk = V.palette.duskness(h);
 
-    // --- the river ---
+    // --- the river: sandy verge under, dark edge, living water, one glint ---
     const riverCol = U.mix(U.mix('#7C94A0', '#8FA6B0', 0.3), '#1A2A32', dusk * 0.8);
+    const edgeCol = U.mix('#4E6A76', '#101C22', dusk * 0.8);
     const glint = U.mix('#EFF3EA', g.horizon, 0.5);
     ctx.lineCap = 'round';
     const n = 130;
+    const segs = [];
+    for (let i = 0; i <= n; i++) segs.push(U.spline(l.river, i / n));
+    const pass = (widthFn, color, alpha) => {
+      ctx.globalAlpha = alpha;
+      for (let i = 0; i < n; i++) {
+        const p = segs[i], q = segs[i + 1];
+        const midY = (p[1] + q[1]) / 2;
+        if (midY < v.y - 90 || midY > v.y + v.h + 90) continue;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = widthFn(i / n);
+        ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
+      }
+    };
+    pass((tt) => l.riverWidth(tt) * 1.55, U.mix(V.palette.keys.moss.sand, '#5A5A46', dusk * 0.6), 0.9); // verge hides the baked cell steps
+    pass((tt) => l.riverWidth(tt) * 1.06, edgeCol, 0.9);
+    pass((tt) => l.riverWidth(tt) * 0.82, riverCol, 0.95);
+    pass((tt) => l.riverWidth(tt) * 0.34, U.shade(riverCol, 0.12), 0.7);
+    // moving glints
     for (let i = 0; i < n; i++) {
-      const p = U.spline(l.river, i / n);
-      const q = U.spline(l.river, (i + 1) / n);
+      const p = segs[i], q = segs[i + 1];
       const midY = (p[1] + q[1]) / 2;
       if (midY < v.y - 80 || midY > v.y + v.h + 80) continue;
-      const wdt = l.riverWidth(i / n);
-      ctx.strokeStyle = riverCol;
-      ctx.globalAlpha = 0.85;
-      ctx.lineWidth = wdt;
-      ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); ctx.stroke();
-      // moving glints
       const gph = Math.sin(t * 2 + i * 0.9);
       if (gph > 0.55) {
         ctx.globalAlpha = (gph - 0.55) * 0.9 * (1 - dusk * 0.5);
         ctx.strokeStyle = glint;
         ctx.lineWidth = 1.6;
-        const off = Math.sin(i * 3.1) * wdt * 0.28;
+        const off = Math.sin(i * 3.1) * l.riverWidth(i / n) * 0.24;
         ctx.beginPath();
         ctx.moveTo(p[0] + off, p[1]);
         ctx.lineTo(q[0] + off, q[1]);

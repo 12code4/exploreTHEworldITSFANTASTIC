@@ -6,11 +6,11 @@
     why: "The ferryman; the vale's front door has a person and it is him. He rates stone skims because standards matter and words don't.",
     tint: '#4E5A64', hair: '#6E6A5A', hat: '#3A3E44',
     schedule: [
-      { h: 0, node: 'landing', dx: -20 },
+      { h: 0, node: 'landing', dx: -20, sleep: true },
       { h: 5.5, node: 'landing', dx: 8, dy: -6 },
       { h: 11.9, node: 'bell', dx: 14, dy: 4 },      // pie on the bell bench, noon sharp
       { h: 12.8, node: 'landing', dx: 8, dy: -6 },
-      { h: 20.5, node: 'landing', dx: -20 },
+      { h: 20.5, node: 'landing', dx: -20, sleep: true },
     ],
     lines: {
       default: [
