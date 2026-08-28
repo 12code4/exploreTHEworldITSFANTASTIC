@@ -384,6 +384,18 @@ What remains forbidden forever: the quest log, the objective marker, the
 tracker, timers on kindness, payment in numbers, and any ask that must be
 accepted for the world to continue.
 
+**Amendment II — The Rule of Three Temptations.** *(Added when the vale
+was judged beautiful but not yet dense.)* Wonder needs room, but empty is
+not the same as quiet. The standard, enforceable per screen: **any
+screenful of world holds at least three noticeable things** — a doing, a
+detail worth leaning at, a person or creature, a color spike, a sound with
+a source. A quiet moor at dusk passes (heather, wind-lean, the stones); a
+corridor of grass does not. Density is achieved with meant things, never
+clutter: each of the three still answers the Interrogation. And a world's
+cast now has two registers: the **majors** (few, knowable as neighbors)
+and the **chorus** (many, one great line each) — a street with three
+one-line strangers beats an empty street every time.
+
 ---
 
 ## Coda

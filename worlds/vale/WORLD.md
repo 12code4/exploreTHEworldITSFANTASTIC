@@ -1,6 +1,6 @@
 # WENNOW VALE
 
-> The first fantastic world. It answers to [PHILOSOPHY.md](PHILOSOPHY.md) in
+> The first fantastic world. It answers to [PHILOSOPHY.md](../../PHILOSOPHY.md) in
 > everything; where this document and that one disagree, that one wins.
 
 The philosophy told a fable about a second mapmaker who planted a pear tree
@@ -18,10 +18,10 @@ enough to hold in the heart, dense enough to never finish. The player knows
 it as "somewhere" until the world tells them its name (see *The title that
 learns*, below).
 
-Companion documents: **[world/COLOR.md](world/COLOR.md)** — the color
+Companion documents: **[COLOR.md](COLOR.md)** — the color
 script (where the vale is quiet and where it detonates);
-**[world/DIALOGUE.md](world/DIALOGUE.md)** — the voice bible (how people
-here actually talk); **[world/LEDGER.md](world/LEDGER.md)** — the
+**[VOICES.md](VOICES.md)** — the voice bible (how people
+here actually talk); **[LEDGER.md](LEDGER.md)** — the
 mysteries, audited.
 
 ---
@@ -131,8 +131,8 @@ you live there now, if you like. Done is a feeling.
 
 Each place below carries its **gestures** (how it asks to be found — Law 2)
 and its **whys** (Law 8). Mysteries are marked ◆ and live in
-[world/LEDGER.md](world/LEDGER.md). Color keys per region are scored in
-[world/COLOR.md](world/COLOR.md).
+[LEDGER.md](LEDGER.md). Color keys per region are scored in
+[COLOR.md](COLOR.md).
 
 ### 3.1 Saltmouth — the mouth of the world
 
@@ -410,10 +410,20 @@ connective tissue in the vale:
   detonating out of a hedge (the vale's one jump-scare, forever); the fox
   crossing the ford at night; a dropped glove that belongs to someone
   findable; two cats pretending not to see each other across a lane.
+- **Pockets.** Between the named regions, the vale keeps small found
+  places that belong to nobody's route: the bramble maze behind the
+  chapel (blackberries, and a way through only kids know), the boat
+  graveyard on the shingle (ribs of old hulls, each with a name still
+  legible), the icehouse ruin (cold air breathing out of a green door),
+  the swallow bridge (stand under it at dusk and the birds pour out
+  around you), the wishing stump (coins hammered edge-on into old wood,
+  a custom nobody starts and nobody stops).
 - **The rule:** stand anywhere in the vale for ten seconds and at least
   one thing — light, wind, creature, sound — must be worth the standing.
   If a stretch fails this, it is a bug at a known coordinate. Fix the
-  corner, never add a signpost.
+  corner, never add a signpost. (This is the philosophy's Rule of Three
+  Temptations, Amendment II, applied: every screenful holds at least
+  three noticeable things.)
 
 ---
 
@@ -422,7 +432,7 @@ connective tissue in the vale:
 Ten, plus a cat that waits, a cat that naps, and a figure that waves.
 Small on purpose: each person must be knowable the way a neighbor is.
 **Their voices are specified — as grammars, with sample lines — in
-[world/DIALOGUE.md](world/DIALOGUE.md).** Nobody sounds like anybody else,
+[VOICES.md](VOICES.md).** Nobody sounds like anybody else,
 and nobody sounds like a writer.
 
 | Person | Where | Routine spine | The thing they wonder about |
@@ -437,6 +447,15 @@ and nobody sounds like a writer.
 | **Sela** | the Locks | winds gates on her hours; checks eel baskets at dusk | what the alder falling meant to whoever wrote it down |
 | **Nettle** | the Dye Yards | steeps by morning, dries by wind, delivers by whim | why the butterflies only love the yellow |
 | **Maren** | up | draws | the next page |
+
+**And the chorus.** Beyond the majors, the vale keeps a chorus of minor
+folk — the post with the knee, the curate who wept once, the market
+granny the pears fear, kids with jars of nearly-fog — each with one great
+text-box line, two at most (see [VOICES.md](VOICES.md) §chorus). On
+**market mornings** (weekly, the Cross flagstones) and Lantern Nights the
+chorus doubles: stalls, dogs, arguments about plums, a fiddle nobody
+admits to owning. Density of people is density of world; the knowable
+cast stays ten.
 
 **The traveler is silent.** The player speaks in gestures — nod, shake,
 shrug, point, show-what's-in-your-hands, small bow — and villagers read
@@ -627,7 +646,7 @@ pitch); the tune surfaces rarely enough to be a sighting.
 
 ## 10. The color script
 
-Lives in **[world/COLOR.md](world/COLOR.md)** — the vale's palette
+Lives in **[COLOR.md](COLOR.md)** — the vale's palette
 dramaturgy: a naturalistic world in the Key of Moss that holds pockets
 where color detonates (the Hollow's pastels, the Yards' saturated flags,
 the Rose and the Glimmer going full prism at noon, the moor burning violet
@@ -669,8 +688,9 @@ not quotas):
 
 ## 12. Scope, honestly
 
-- 9 regions; ~50 authored places (a place can be a bench); 10 people + 3
-  presences; ~8 core systems; one melody; one wind.
+- 9 regions plus pockets; ~60 authored places (a place can be a bench);
+  10 majors + a chorus of ~15 one-line folk + 3 presences; ~8 core
+  systems; one melody; one wind.
 - Mystery ledger now holds ~28 entries: ~22 answered in-world, 6 marked
   **never** — the famous mysteries run richer than a tithe on purpose;
   the one-in-ten is audited across ALL questions including the small
@@ -680,7 +700,7 @@ not quotas):
   building upward. The fable is testable early, and we will test it.
 
 Build order and technical commitments live in
-[ARCHITECTURE.md](ARCHITECTURE.md).
+[ARCHITECTURE.md](../../ARCHITECTURE.md).
 
 ---
 

@@ -1,6 +1,6 @@
 # ARCHITECTURE
 
-> How Wennow Vale gets built. [WORLD.md](WORLD.md) says what the vale is;
+> How the atlas's worlds get built. [ATLAS.md](ATLAS.md) holds the book; each world's WORLD.md (see worlds/) says what that page is;
 > [PHILOSOPHY.md](PHILOSOPHY.md) says what it must never become. This file
 > turns both into engineering. Architect before you sculpt: nothing here is
 > a hill yet — this is the frame the hills hang on.
@@ -10,7 +10,7 @@
 ## 1. Form
 
 **A browser game. Vanilla JavaScript, ES modules, Canvas 2D, zero build
-step, zero binary assets.** `index.html` + `src/` + `world/`, runnable by
+step, zero binary assets.** `index.html` + `src/` + `worlds/`, runnable by
 opening the page (or any static server), deployable from the repo as-is.
 
 Why this and not an engine:
@@ -55,7 +55,7 @@ src/
     painter.js       chunked static underpaint → offscreen canvases
     scene.js         y-sorted dynamic pass (people, cats, player, water)
     light.js         light pass: time-of-day grade, lamps, glow, god-gaps
-    color.js         palette keys + region/hour grading (world/COLOR.md as data)
+    color.js         palette keys + region/hour grading (worlds/<name>/COLOR.md as data)
     particles.js     petals, butterflies, birds, rain, mist, motes, fireflies,
                      lanterns, chalk dust, eel shimmer
     showpieces.js    the Rose projection, the Glimmer shaft, wet-stone
@@ -66,21 +66,43 @@ src/
     ambience.js      wind / river / birds / sea, mixed by place + weather
     bell.js          the hour bell (flat third), synthesis; playable pattern
     echo.js          the Steps' doubled echo; hummable, teachable
-    tune.js          the vale's one melody and its scattered fragments
+    tune.js          plays the active world's melody from its pack
   journal.js         memory, sketches, strings, the player-drawn map; never counts
-  dialogue.js        voices as grammars (world/DIALOGUE.md), rotation, gestures
+  dialogue.js        voices as grammars (DIALOGUE.md + worlds/<name>/VOICES.md), rotation, gestures
   people.js          routine-following characters; warmth flags; asks; gossip
   gestures.js        emitter runtime: light, sound, motion, smoke, COLOR as guidance
   save.js            localStorage: time, position, journal, scarf, name-learned
-world/
-  vale.js            the master layout: regions, elevations, the river
-  places/            one module per authored place (see schema)
-  people/            one module per person: routine, voice grammar, asks, warmth
-  LEDGER.md          the mystery ledger (human-readable, audited)
-  COLOR.md           the color script: keys, scores, the ten postcards
-  DIALOGUE.md        the voice bible: grammars, sample banks, scenes
-  tune.js            the melody as data; who carries which fragment, how bent
+ATLAS.md             the book of worlds: the frame, the rules of pages
+DIALOGUE.md          the Text Box Law (game-wide dialogue form)
+worlds/
+  <name>/            one directory per world — a WORLD PACK:
+    WORLD.md         the world bible
+    COLOR.md         its color script: keys, scores, its ten postcards
+    VOICES.md        its voices (grammars + text-box sample banks)
+    LEDGER.md        its mystery ledger, its own tithe
+    layout.js        the master layout: regions, elevations, spine
+    places/          one module per authored place (see schema)
+    people/          one module per person: routine, grammar, asks, warmth
+    clock.js         what drives time HERE (vale: sun/tides; house: the
+                     Household's routine — quake, eruption, tides of the
+                     Big Door, the Blue Hour, Vacuum Day)
+    tune.js          this world's melody and its scattered fragments
+    render.js        world-specific showpieces registered with the engine
+  vale/              page I  — Wennow Vale
+  house/             page II — the Great Indoors
 ```
+
+**Multi-world engine contract:** the engine (`src/`) is shared and
+world-blind; a world pack supplies data plus hooks — clock sources,
+palette keys, gesture set, particle recipes, showpiece renderers, and
+its verbs' tuning (the vale's slide is the house's banister; ant
+wall-climbing is a world-supplied traversal rule, not an engine fork).
+The atlas hub (the open book on the desk) is the smallest possible
+scene: pages, a lamp, turn and step in. Save state is per world, except
+the journal (one book, sections per world) and the scarf (stripes
+travel). Rhymes between worlds ship as data coincidences, never as
+code — the engine must not know the router and the lighthouse are
+cousins.
 
 **Files that will never exist:** `quests.js`, `objectives.js`, `xp.js`,
 `inventory.js`, `minimap.js`, `achievements.js`, `shop.js`. A
@@ -95,7 +117,7 @@ Every authored thing is a data module with a **mandatory `why`**. The
 loader enforces the Law of Meant Things mechanically:
 
 ```js
-// world/places/saltmouth/boathouse.js
+// worlds/vale/places/saltmouth/boathouse.js
 export default {
   id: 'boathouse',
   region: 'saltmouth',
@@ -137,7 +159,7 @@ history, refusable, and finished by a world event, not a turn-in screen.
 The loader rejects any ask whose resolution grants a countable.
 
 **Voices are grammars in data:** each person's module declares their
-syntax constraints from [world/DIALOGUE.md](world/DIALOGUE.md) (max
+syntax constraints from [DIALOGUE.md](DIALOGUE.md) and each world's VOICES.md (max
 words, banned words, tics) and their line banks tagged by hour, weather,
 and history. A dev-mode lint checks lines against the grammar — the
 stiffness check is automated exactly like the Interrogation.
@@ -147,7 +169,7 @@ only when two people actually meet on the schedule lattice; each hop can
 mutate the wording (data carries per-hop variants). News walks, at
 walking speed, because it is literally carried.
 
-**The Ledger** stays Markdown (`world/LEDGER.md`) — a table the build is
+**The Ledger** stays Markdown (`worlds/<name>/LEDGER.md`) — a table the build is
 audited against, not runtime data. Mysteries live in the world's details;
 the ledger just keeps us honest about answers and the tithe.
 
@@ -198,7 +220,7 @@ place, not an overlay; sitting is the "pause menu."
   "beauty is direction" is implemented here — gesture emitters of kind
   `light` feed this pass.
 - **Color is a graded system, not paint** (`render/color.js`, data from
-  [world/COLOR.md](world/COLOR.md)): each region carries a palette key;
+  each world's [COLOR.md](worlds/vale/COLOR.md)): each region carries a palette key;
   the renderer crossfades keys by position and hour. The detonation
   places (the Hollow, the Yards, the Rose, the Glimmer) are where the
   grade opens up — and every detonation has a physical source drawn in
@@ -237,7 +259,7 @@ place, not an overlay; sitting is the "pause menu."
   in the wood (the quieter-deeper rule is a mixer curve).
 - `bell.js`: FM strike, partials detuned so the third rings flat — the
   crack is canon, therefore it is in the synthesis.
-- `tune.js`: the melody as data (world/tune.js); fragments surface exactly
+- `tune.js`: each melody as data (worlds/<name>/tune.js); fragments surface exactly
   as WORLD.md §7 places them (Perl's hum, wrong chalk notes, doubled echo,
   glowworm rhythm); plays whole only beyond the doorframe.
 - Everything ducks for dialogue; silence is a deliberate mixer state
@@ -301,6 +323,38 @@ Stone**; the Dye Yards, the scarf, and the rain rush in **High Water**;
 Lantern Night, the echo game, and the moonbow in **Inks**. No milestone
 count changes; the vale got denser, not longer.
 
+**The House's track** (begins after the vale's proof-of-vale gate
+passes, sharing every engine system the vale forced into existence):
+
+1. **Bag Day** — arrival playable: the strawberry bag, the forage line,
+   Skirting Town's fairy-light main street, Rule 3 on the slate.
+2. **The 7:38 Run** — the Household clock end to end (Quake → Big
+   Dark), the toaster eruption, forage lines, Marm.
+3. **Big Smooth** — the Roomba ferry, the hallway tides, the Meteor,
+   envelope sledding, the key bowl.
+4. **The Blue Hour** — living room: carpet savanna, Couch Mountains and
+   the Under-Couch digs, the Screen, the Bright's migration, the LED
+   constellation. *Proof-of-house gate here.*
+5. **Upstairs** — study and bathroom: bookshelf city, Sylvia, Vesper
+   and the lamp, the Blinkbox vigil, steam jungle, the Backwards Town.
+6. **Vacuum Day** — the Storm, its omens, its aftermath postcard; the
+   Dog's crumb, wink, and stairs.
+7. **The Hatch** — the attic, the Dollhouse, the knot-hole, the wave.
+   The tune assembled from fridge-hum up.
+
+**House-specific engineering** (registered via the world pack, not
+forked into the engine): wall/ceiling traversal (gravity is a
+world-supplied rule; camera rolls gently on wall transitions, and the
+lampshade Overlook is the vista state upside-down); the Bright as a
+scheduled projected-light entity (the one light source that MOVES on
+the clock — engine light pass already supports it); Big Smooth as a
+scheduled vehicle (the ferry code, re-skinned, plus a stuck state and a
+distress note); the LED constellation as night point-lights with per-
+appliance colors; muffled-Human audio (voices as filtered melody, never
+words); dust-bunny herds as drifting soft-body particle flocks; scale
+FX (depth-of-field fake via layer blur at mesa edges, giant-object
+parallax so a countertop reads as terrain).
+
 ---
 
 ## 10. Running the philosophy's Tests during build
@@ -314,7 +368,7 @@ count changes; the vale got denser, not longer.
   tracker, exactly as the philosophy orders. (The bot measures the
   world's pull; it is not an autoplayer and never gates anything.)
 - **Rumor / Detour / Return:** human rituals at every milestone's end,
-  with notes kept in the repo under `world/playtests/`.
+  with notes kept in the repo under `worlds/<name>/playtests/`.
 
 ---
 
