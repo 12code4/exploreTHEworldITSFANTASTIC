@@ -31,3 +31,13 @@ time were the blocking font fetch and are fixed (non-blocking load).
 **Tithe check** — content sweep found no file explaining the sevens, the
 seventh chimney, the double echo, or the Green Evening. Folklore only,
 as the Ledger orders.
+
+**Addendum, after the quality gate** — four hunters (state/flow,
+render/perf, content-runtime, canon) filed 18 findings; every
+substantive one was verified by hand against the code and fixed: the
+Sela talk crash, the keyboard intro softlock, mid-intro saves, deep
+water respawn on load, the unreachable title payoff, warmth
+persistence, the letter/loaf set-down strand, ask arming, cached water
+math, the sketch-veil layer, Looker draw order, and three text boxes
+tightened to the law. The full-spine Silent Walk verified in
+overlapping halves (landing → past the Cross; locks → hut); no stalls.
