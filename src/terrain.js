@@ -48,17 +48,19 @@
   };
 
   // water: 0 none, 1 shallow (paddle), 2 deep (float back)
+  // uses the cached river distance; t along the river approximates by y,
+  // which the Wennow permits by flowing politely north to south
   T.water = function (x, y) {
     const l = L();
-    if (y > l.seaY) return U.dist(x, y, x, l.seaY) < 40 ? 1 : 2;
-    const r = U.nearestOnSpline(l.river, x, y, 200);
-    const w = l.riverWidth(r.t);
-    if (r.d < w * 0.45) {
+    if (y > l.seaY) return y - l.seaY < 40 ? 1 : 2;
+    const d = T.riverDist(x, y);
+    const w = l.riverWidth(U.clamp((y - 1180) / 3980, 0, 1));
+    if (d < w * 0.45) {
       // the ford: stepping-stone shallows by the Cross
       if (y > 4240 && y < 4360) return 1;
       return 2;
     }
-    if (r.d < w * 0.75) return 1;
+    if (d < w * 0.75) return 1;
     return 0;
   };
 

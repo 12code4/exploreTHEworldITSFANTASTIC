@@ -3,7 +3,7 @@
 // besides the journal — and asks are answered with a nod or a shake.
 (function (V) {
   const T = V.textbox = {};
-  let queue = [], showing = null, chars = 0, done = null;
+  let queue = [], showing = null, chars = 0, done = null, armed = 0;
   let asking = null; // {yes, no, choice: 0|1}
 
   T.active = () => !!showing;
@@ -25,13 +25,14 @@
 
   function next() {
     showing = queue.shift() || null;
-    chars = 0;
+    chars = 0; armed = 0;
     if (!showing && done) { const d = done; done = null; d(); }
   }
 
   T.advance = function () {
     if (!showing) return;
-    if (chars < showing.text.length) { chars = showing.text.length; return; }
+    if (chars < showing.text.length) { chars = showing.text.length; armed = 0; return; }
+    if (showing.isAsk && asking && armed < 0.3) return; // a nod takes a breath; mashing can't promise
     if (showing.isAsk && asking) {
       const a = asking; asking = null;
       const yes = a.choice === 0;
@@ -49,6 +50,7 @@
 
   T.update = function (dt) {
     if (showing && chars < showing.text.length) chars += dt * 60;
+    else if (showing) armed += dt;
   };
 
   T.draw = function (ctx, SW, SH) {

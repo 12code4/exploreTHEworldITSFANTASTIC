@@ -33,14 +33,18 @@
   const KEYS = { ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down', ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right' };
   addEventListener('keydown', (e) => {
     V.audio.start();
-    if (mode === 'title') { mode = 'intro'; return; }
+    if (mode === 'title') { mode = hasSave ? 'resume' : 'intro'; return; }
     if (KEYS[e.code] && !V.journal.open) {
       if (V.textbox.active()) { if (e.code === 'ArrowLeft' || e.code === 'KeyA') V.textbox.left(); if (e.code === 'ArrowRight' || e.code === 'KeyD') V.textbox.right(); }
       else input[KEYS[e.code]] = 1;
     }
     if (V.journal.open && (e.code === 'ArrowLeft' || e.code === 'KeyA')) V.journal.flip(-1);
     if (V.journal.open && (e.code === 'ArrowRight' || e.code === 'KeyD')) V.journal.flip(1);
-    if (e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') { e.preventDefault(); if (mode === 'play') V.player.interact(); }
+    if (e.code === 'Space' || e.code === 'KeyE' || e.code === 'Enter') {
+      e.preventDefault();
+      if (V.textbox.active()) V.textbox.advance();       // any mode: the box always answers the button
+      else if (mode === 'play') V.player.interact();
+    }
     if (e.code === 'KeyJ') V.journal.toggle();
     if (e.code === 'KeyM') V.audio.mute();
     if (e.code === 'KeyL' && V.player.looker) { V.player.lookerOn = !V.player.lookerOn; }
@@ -48,7 +52,7 @@
   addEventListener('keyup', (e) => { if (KEYS[e.code]) input[KEYS[e.code]] = 0; });
   canvas.addEventListener('pointerdown', (e) => {
     V.audio.start();
-    if (mode === 'title') { mode = 'intro'; return; }
+    if (mode === 'title') { mode = hasSave ? 'resume' : 'intro'; return; }
     if (V.textbox.active()) {
       if (V.textbox.isAsking()) {
         const rr = canvas.getBoundingClientRect();
@@ -73,10 +77,14 @@
   // ---------- save ----------
   const SAVEKEY = 'wennow-vale';
   function save() {
+    if (mode !== 'play') return; // never persist mid-crossing or mid-title
     try {
+      const warmth = {};
+      for (const p of V.people.list) if (p.warmth) warmth[p.id] = p.warmth;
       localStorage.setItem(SAVEKEY, JSON.stringify({
         clock: V.clock.save(), player: V.player.save(), journal: V.journal.save(),
         flags: ST.flags, asks: { open: AS.openIds, done: AS.doneIds }, sketch: V.sketchworld.save(),
+        warmth,
       }));
     } catch (e) {}
   }
@@ -87,15 +95,19 @@
       V.clock.load(s.clock); V.player.load(s.player); V.journal.load(s.journal);
       ST.flags = s.flags || {}; AS.openIds = (s.asks || {}).open || {}; AS.doneIds = (s.asks || {}).done || {};
       V.sketchworld.load(s.sketch);
+      if (s.warmth) for (const id in s.warmth) { const p = V.people.byId(id); if (p) p.warmth = s.warmth[id]; }
+      // a save should never wake you in deep water or inside a wall
+      if (V.player.x && (V.terrain.water(V.player.x, V.player.y) === 2 || V.terrain.blocked(V.player.x, V.player.y))) {
+        V.player.x = V.layout.spawn[0]; V.player.y = V.layout.spawn[1];
+      }
       return true;
     } catch (e) { return false; }
   }
 
-  // ---------- modes: title -> intro (the crossing) -> play ----------
+  // ---------- modes: title (always) -> intro (first time) or play ----------
   let mode = 'title';
   let introT = 0;
-  const hasSave = load();
-  if (hasSave && V.player.x) mode = 'resume';
+  const hasSave = load() && !!V.player.x;
 
   // debug affordances for the postcard ritual (dev only, harmless)
   const q = new URLSearchParams(location.search);
@@ -104,6 +116,7 @@
     const n = V.layout.nodes[q.get('at')];
     V.player.x = n[0]; V.player.y = n[1] + 20;
     mode = 'play';
+    CAM.jump(V.player.x, V.player.y);
   }
   if (q.get('day')) V.clock.day = parseInt(q.get('day'));
   const DBG = !!q.get('dbg');
@@ -236,6 +249,7 @@
     vg.addColorStop(1, 'rgba(10,16,12,0.28)');
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, CAM.SW, CAM.SH);
+    V.showpieces.drawLooker(ctx, canvas, CAM.SW, CAM.SH);
     V.textbox.draw(ctx, CAM.SW, CAM.SH);
     V.journal.draw(ctx, CAM.SW, CAM.SH);
     drawToasts();

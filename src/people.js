@@ -115,6 +115,7 @@
     }
     // a new ask offered at its hour, refusable with a shake of the head
     for (const a of p.asks || []) {
+      if (a.resolveOnTalk || !a.boxes) continue; // resolution entries never offer
       if (V.asks.isOpen(a.id) || V.asks.isDone(a.id)) continue;
       if (a.when && V.clock.phase() !== a.when) continue;
       if (a.cond && !a.cond(V.state, player)) continue;

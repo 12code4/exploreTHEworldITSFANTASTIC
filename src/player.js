@@ -125,6 +125,8 @@
       }
     }
     // nothing near: set the carried thing down, or just sit a moment
+    if (PL.carry === 'letter') { V.state.toast('(the letter stays in your pocket. it knows.)'); return; }
+    if (PL.carry === 'loaf' && V.asks.isOpen('bread-round')) { V.state.toast('(the loaf rides on. a string remembers.)'); return; }
     if (PL.carry) { V.state.toast('set down: ' + PL.carry); PL.carry = null; return; }
     const b = V.objects.list.find((ob) => ob.kind === 'bench' && U.dist(ob.x, ob.y, PL.x, PL.y) < 30);
     if (b) { PL.sitting = true; if (b.onSit) b.onSit(PL); }

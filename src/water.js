@@ -18,8 +18,8 @@
     const glint = U.mix('#EFF3EA', g.horizon, 0.5);
     ctx.lineCap = 'round';
     const n = 130;
-    const segs = [];
-    for (let i = 0; i <= n; i++) segs.push(U.spline(l.river, i / n));
+    if (!W._segs) { W._segs = []; for (let i = 0; i <= n; i++) W._segs.push(U.spline(l.river, i / n)); }
+    const segs = W._segs;
     const pass = (widthFn, color, alpha) => {
       ctx.globalAlpha = alpha;
       for (let i = 0; i < n; i++) {

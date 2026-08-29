@@ -28,13 +28,24 @@
     if (waveT > 0) waveT -= dt;
   };
 
-  // pencil veil over everything north of the line, minus inked breaths
-  SK.draw = function (ctx, cam) {
+  // pencil veil over everything north of the line, minus inked breaths.
+  // built on its own layer so the erased holes reveal the WORLD, never the
+  // page behind the canvas.
+  SK.draw = function (mainCtx, cam) {
     const v = cam.view();
     if (v.y > V.layout.sketchY) return;
+    const clipH = Math.min(V.layout.sketchY, v.y + v.h) - v.y + 16;
+    if (clipH <= 0) return;
+    const off = SK._off || (SK._off = document.createElement('canvas'));
+    const ow = Math.ceil(v.w + 16), oh = Math.ceil(clipH);
+    if (off.width !== ow || off.height !== oh) { off.width = ow; off.height = oh; }
+    const ctx = off.getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, ow, oh);
+    ctx.translate(-(v.x - 8), -(v.y - 8));
     ctx.save();
     ctx.beginPath();
-    ctx.rect(v.x - 8, v.y - 8, v.w + 16, Math.min(V.layout.sketchY, v.y + v.h) - v.y + 8);
+    ctx.rect(v.x - 8, v.y - 8, v.w + 16, clipH);
     ctx.clip();
     // grey wash + pencil hatching
     ctx.fillStyle = 'rgba(226,224,214,0.82)';
@@ -89,6 +100,8 @@
       ctx.stroke();
     }
     ctx.restore();
+    // composite the finished veil over the world
+    mainCtx.drawImage(off, v.x - 8, v.y - 8);
   };
 
   SK.save = () => ({ inked: SK.inked.slice(0, 400), waved });
