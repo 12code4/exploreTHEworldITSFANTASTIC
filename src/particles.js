@@ -60,10 +60,12 @@
     if (h > 6 && h < 20 && v.y + v.h > 4500 && Math.random() < 0.25 * dt) {
       spawn({ k: 'gull', x: v.x + Math.random() * v.w, y: v.y + Math.random() * v.h * 0.5, vx: 20 + Math.random() * 22, life: 20, age: 0, ph: Math.random() * 6.28 });
     }
-    // lanterns down the river on full-moon nights
-    if (daily.fullMoon && (h > 20.4 || h < 1) && Math.random() < 0.5 * dt) {
-      const p = U.spline(V.layout.river, 0.62 + Math.random() * 0.05);
-      spawn({ k: 'lantern', x: p[0], y: p[1], t: 0.62, life: 60, age: 0, col: ['#FFD97A', '#F4B8C8', '#B8E8B0'][Math.floor(Math.random() * 3)] });
+    // lanterns down the river on full-moon nights: set going at the Cross,
+    // bound for the sea, Odd out there somewhere herding strays
+    if (daily.fullMoon && (h > 20.4 || h < 1) && Math.random() < 1.4 * dt) {
+      const t0 = 0.725 + Math.random() * 0.03;
+      const p = U.spline(V.layout.river, t0);
+      spawn({ k: 'lantern', x: p[0], y: p[1], t: t0, life: 70, age: 0, col: ['#FFD97A', '#F4B8C8', '#B8E8B0'][Math.floor(Math.random() * 3)] });
     }
     // eel run: the river boils silver at certain dusks
     if (daily.eelRun && h > daily.eelStart && h < daily.eelStart + 0.12 && Math.random() < 24 * dt) {
