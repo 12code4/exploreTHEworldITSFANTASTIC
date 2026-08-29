@@ -9,7 +9,7 @@
   O.place({
     id: 'steps-waymark-kestrel', kind: 'waymark', at: [1320, 2325],
     why: "She set a slate at every truth worth stopping for. This one has been right every May since she cut it.",
-    gaze: ['A slate at the stair foot, cut in a quick hand: "kestrel nests here in May."', 'High in the gorge wall, a notch, whitewashed below. It is checked every year. Not by people.'],
+    gaze: ['A slate at the stair foot, cut in a quick hand: "kestrel nests here in May."', 'High in the gorge wall: a notch, whitewashed below. Checked every year — not by people.'],
     journal: 'her slates are not directions. kestrel nests here in May.',
   });
 

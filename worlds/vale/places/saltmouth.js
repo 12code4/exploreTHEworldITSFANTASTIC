@@ -25,7 +25,7 @@
   O.place({
     id: 'boathouse-hull', kind: 'boat', at: [878, 4952], patched: true, scale: 1.1,
     why: "Odd's father built hulls; this upturned one is his last, kept dry and useful. Maren patched its cracks with a spoiled sheet of her first survey — she papered half the vale.",
-    gaze: ['The hull is patched with old paper. Lean closer: it is a MAP. The vale, drawn young, in a quick hand.', 'Across the top, in fast letters: WENNOW VALE. One edge of the sheet was left blank.'],
+    gaze: ['The hull is patched with old paper — and the paper is a MAP. The vale, drawn young, in a quick hand.', 'Across the top, in fast letters: WENNOW VALE. One edge of the sheet was left blank.'],
     journal: 'the boathouse hull is patched with a map of the vale, drawn young',
     learnName: 'Wennow Vale',
   });
@@ -86,7 +86,7 @@
   O.place({
     id: 'gullhead-hollies', kind: 'prop', variant: 'basket', at: [1870, 5010], hidden: false,
     why: "Iris's kelp basket, set where she drops it every dusk on her way up to polish, exactly one stride from the door.",
-    gaze: ["A basket of kelp. Still wet. Somebody's dusk routine passes through here like clockwork made of seaweed."],
+    gaze: ["A basket of kelp, still wet. Somebody's dusk routine passes through here on schedule."],
   });
 
   // pear tree at the landing: the first station of Maren's survey line
