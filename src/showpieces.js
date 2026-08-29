@@ -152,7 +152,7 @@
   S.drawLooker = function (ctx, canvas, SW, SH) {
     if (!V.player.lookerOn) return;
     const off = S._off || (S._off = document.createElement('canvas'));
-    off.width = canvas.width; off.height = canvas.height;
+    if (off.width !== canvas.width || off.height !== canvas.height) { off.width = canvas.width; off.height = canvas.height; }
     off.getContext('2d').drawImage(canvas, 0, 0);
     const cx = canvas.width / 2, cy = canvas.height / 2;
     const rot = V.wind.time() * 0.1;

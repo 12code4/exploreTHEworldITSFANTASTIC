@@ -94,19 +94,29 @@
   };
 
   // worn ways, sampled from the node graph for the painter
+  let segsCache = null;
   T.pathSegs = function () {
-    const l = L(), segs = [];
-    for (const [a, b] of l.edges) segs.push([l.nodes[a], l.nodes[b]]);
-    return segs;
+    if (!segsCache) {
+      const l = L(); segsCache = [];
+      for (const [a, b] of l.edges) segsCache.push([l.nodes[a], l.nodes[b]]);
+    }
+    return segsCache;
   };
+  const npCache = new Map();
   T.nearPath = function (x, y) {
-    let best = 1e9;
+    const k = (x >> 4) * 4096 + (y >> 4);
+    let best = npCache.get(k);
+    if (best !== undefined) return best;
+    const qx = ((x >> 4) << 4) + 8, qy = ((y >> 4) << 4) + 8;
+    best = 1e9;
     for (const [a, b] of T.pathSegs()) {
       const px = b[0] - a[0], py = b[1] - a[1];
-      const t = U.clamp(((x - a[0]) * px + (y - a[1]) * py) / (px * px + py * py || 1), 0, 1);
-      const d = U.dist(x, y, a[0] + px * t, a[1] + py * t);
+      const t = U.clamp(((qx - a[0]) * px + (qy - a[1]) * py) / (px * px + py * py || 1), 0, 1);
+      const d = U.dist(qx, qy, a[0] + px * t, a[1] + py * t);
       if (d < best) best = d;
     }
+    if (npCache.size > 60000) npCache.clear();
+    npCache.set(k, best);
     return best;
   };
 })(window.VALE);

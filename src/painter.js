@@ -187,7 +187,8 @@
         if (h > 0.4) continue;
         const jx = wx + (U.hash2(wx, wy, 41) - 0.5) * step;
         const jy = wy + (U.hash2(wx, wy, 42) - 0.5) * step;
-        if (jy > V.layout.seaY - 8 || V.terrain.water(jx, jy) || V.terrain.nearPath(jx, jy) < 14) continue;
+        // cheap gates only: cached river distance and cached path distance
+        if (jy > V.layout.seaY - 8 || V.terrain.riverDist(jx, jy) < 55 || V.terrain.nearPath(jx, jy) < 14) continue;
         const base = groundColor(jx, jy);
         if (!base) continue;
         const sway = V.wind.sway(jx, jy, 1.8) * 3.2;

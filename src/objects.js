@@ -147,22 +147,39 @@
     },
     stone(ctx, o) {
       const s = o.scale || 1, x = o.x, y = o.y;
-      shadow(ctx, x, y, 9 * s);
-      ctx.fillStyle = '#7A7A6E';
+      const lean = ((o.seed % 7) - 3) * 0.035; // each stone stands its own way
+      shadow(ctx, x, y, 10 * s);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(lean);
+      // a broad grey slab with shoulders, not a spire
+      ctx.fillStyle = '#8A8A80';
       ctx.beginPath();
-      ctx.moveTo(x - 6 * s, y);
-      ctx.quadraticCurveTo(x - 7 * s, y - 20 * s, x - 2 * s, y - 24 * s);
-      ctx.quadraticCurveTo(x + 5 * s, y - 22 * s, x + 6 * s, y - 2 * s);
+      ctx.moveTo(-8 * s, 0);
+      ctx.lineTo(-7 * s, -19 * s);
+      ctx.quadraticCurveTo(-6 * s, -24 * s, -1 * s, -25 * s);
+      ctx.quadraticCurveTo(4.5 * s, -24.5 * s, 5.5 * s, -20 * s);
+      ctx.lineTo(7.5 * s, -2 * s);
       ctx.closePath(); ctx.fill();
-      ctx.fillStyle = '#93938A';
+      // the lit face
+      ctx.fillStyle = '#A2A296';
       ctx.beginPath();
-      ctx.moveTo(x - 4 * s, y - 2); ctx.quadraticCurveTo(x - 5 * s, y - 18 * s, x - 1 * s, y - 22 * s);
-      ctx.lineTo(x, y - 2); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = 'rgba(90,110,80,0.32)'; // a modest moss cuff, low down
-      ctx.beginPath(); ctx.ellipse(x - 2.4 * s, y - 4 * s, 2.2 * s, 3.2 * s, 0.4, 0, 6.28); ctx.fill();
-      ctx.strokeStyle = 'rgba(40,44,40,0.4)'; // a carved base line to read as stone
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(x - 4 * s, y - 3 * s); ctx.lineTo(x + 4 * s, y - 3 * s); ctx.stroke();
+      ctx.moveTo(-6 * s, -1 * s);
+      ctx.lineTo(-5.4 * s, -18 * s);
+      ctx.quadraticCurveTo(-4.6 * s, -22.6 * s, -1 * s, -23.4 * s);
+      ctx.lineTo(-0.4 * s, -1 * s);
+      ctx.closePath(); ctx.fill();
+      // weather cracks
+      ctx.strokeStyle = 'rgba(70,72,66,0.5)';
+      ctx.lineWidth = 0.9;
+      ctx.beginPath();
+      ctx.moveTo(1.5 * s, -21 * s); ctx.lineTo(2.6 * s, -13 * s);
+      ctx.moveTo(-3 * s, -9 * s); ctx.lineTo(-1.2 * s, -6 * s);
+      ctx.stroke();
+      // moss cuff, low
+      ctx.fillStyle = 'rgba(90,110,80,0.35)';
+      ctx.beginPath(); ctx.ellipse(-2.6 * s, -3.4 * s, 3.4 * s, 2.4 * s, 0.3, 0, 6.28); ctx.fill();
+      ctx.restore();
     },
     rock(ctx, o) {
       const s = o.scale || 1;

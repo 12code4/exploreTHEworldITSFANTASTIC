@@ -15,7 +15,7 @@ for (const s of srcs) {
 }
 
 const out = `<title>somewhere</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..800;1,400..800&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,400..800;1,400..800&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap">
 <style>
   html, body { margin: 0; height: 100%; background: #10150f; overflow: hidden; }
   #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
