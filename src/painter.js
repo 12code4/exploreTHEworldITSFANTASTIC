@@ -24,9 +24,14 @@
     let c = U.mix(K.landLo, K.landHi, U.clamp(0.25 + n * 0.9, 0, 1));
     c = U.mix(c, K.land, 0.4);
     c = U.mix(c, '#6E8A5A', U.clamp(m - 0.4, 0, 0.5));           // lush by water
-    c = U.mix(c, '#8A8A66', U.clamp((e - 95) / 60, 0, 0.5));     // pale high ground
-    if (reg === 'ninecats') c = U.mix(c, V.palette.keys.heather, 0.28 + n * 0.25);
-    if (reg === 'hushes') c = U.mix(c, '#3E5540', 0.35);          // deep wood floor
+    c = U.mix(c, '#84876A', U.clamp((e - 102) / 110, 0, 0.28));  // pale high ground, gently
+    // the moor and the wood arrive gradually, the way country does
+    const moorD = U.dist(x, y, 560, 2650);
+    const moorF = U.clamp(1 - (moorD - 380) / 320, 0, 1);
+    if (moorF > 0.02) c = U.mix(c, V.palette.keys.heather, moorF * (0.3 + n * 0.25));
+    const woodD = U.dist(x, y, 640, 3550);
+    const woodF = U.clamp(1 - (woodD - 380) / 280, 0, 1);
+    if (woodF > 0.02) c = U.mix(c, '#3E5540', woodF * 0.38);
     if (reg === 'steps' || reg === 'head') c = U.mix(c, '#7A7668', U.clamp((e - 100) / 80, 0, 0.55));
     if (reg === 'dyeyards') c = U.mix(c, '#8A7248', 0.22);        // worked terraced earth
     if (reg === 'saltmouth' && y > 4870) c = U.mix(c, K.sand, U.clamp((y - 4870) / 280, 0, 0.8));
@@ -60,7 +65,10 @@
       if (d < f.r) {
         const t = (1 - d / f.r) * (f.density || 0.5);
         if (f.type === 'heather') c = U.mix(c, V.palette.keys.heather, t * 0.5);
-        else if (f.type === 'flowers') c = U.mix(c, '#5E7A4E', t * 0.4);
+        else if (f.type === 'flowers') {
+          c = U.mix(c, '#5E7A4E', t * 0.4);
+          if (f.colors && f.colors.length) c = U.mix(c, f.colors[0], t * 0.22); // the basin blushes
+        }
         else if (f.type === 'petalfall') c = U.mix(c, V.palette.keys.blossom.petal, t * 0.35);
         else if (f.type === 'reeds') c = U.mix(c, '#6E7A46', t * 0.5);
       }
